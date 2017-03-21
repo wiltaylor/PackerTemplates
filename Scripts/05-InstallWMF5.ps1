@@ -1,4 +1,4 @@
-if ($PSVersionTable.PSVersion.Major -le 4)
+if ($PSVersionTable.PSVersion.Major -le 4 -and $env:patchvm -eq "true")
 {
   Write-Host "Installing Newer Version of PowerShell"
   choco install powershell -y
@@ -6,9 +6,4 @@ if ($PSVersionTable.PSVersion.Major -le 4)
 else
 {
   Write-Host "Not installing PowerShell as it is 5+"
-}
-
-if($env:debugbuild -eq "true") 
-{
-    Start-Process -FilePath "c:\windows\system32\notepad.exe" -Wait
 }

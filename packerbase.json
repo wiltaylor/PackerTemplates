@@ -38,12 +38,12 @@
         "shutdown_timeout": "{{user `shutdown_timeout`}}",
         "floppy_files": [
             "VMTools\\virtualbox\\VMTools.ps1",
-            "AnswerFiles\\{{user `vm_name`}}\\Autounattend.xml",
-            "AnswerFiles\\syspre{{user `arch`}}\\postunattend.xml",
-            "Scripts\\T00.ps1",
+            "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
+            "osconfig\\{{user `vm_name`}}\\config.psd1",
+            "osconfig\\{{user `arch`}}\\postunattend.xml",
+            "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
             "scripts\\zero.ps1"
-        
         ]
     }
     ],
@@ -55,7 +55,7 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ]
         },
         {
@@ -64,12 +64,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/SPInstall.ps1",
+            "script": "scripts/01-InstallServicePack.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [0, 3010]
         },
@@ -79,12 +79,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/Fix-Updates.ps1",
+            "script": "scripts/02-FixWindowsUpdate.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -103,12 +103,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T01-InitialUpdates.ps1",
+            "script": "scripts/03-InstallRollup.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -127,12 +127,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T02-InstallUpdates.ps1",
+            "script": "scripts/04-InstallUpdates.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -151,12 +151,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T02-InstallUpdates.ps1",
+            "script": "scripts/04-InstallUpdates.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -175,12 +175,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T02-InstallUpdates.ps1",
+            "script": "scripts/04-InstallUpdates.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -199,12 +199,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T03-InstallWMF5.ps1",
+            "script": "scripts/05-InstallWMF5.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -223,12 +223,12 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/T04-Finish.ps1",
+            "script": "scripts/06-Finish.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "debugbuild={{user `debugbuild`}}"
+                "patchvm={{user `patchvm`}}"
             ]
         }
     ],
@@ -239,19 +239,7 @@
             "output": "{{user `vm_name`}}-wmf5-nocm-{{.Provider}}.box",
             "vagrantfile_template": "vagrantfile.template"
         }
-    ],
-    "variables": {
-        "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x86/EN/7600.16385.090713-1255_x86fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENEVAL_EN_DVD.iso",
-        "iso_checksum": "971fc00183a52c152fe924a6b99fdec011a871c2",
-        "iso_checksum_type": "sha1",
-        "vbox_guestos": "Windows7",
-        "vm_name": "Windows 7 x86",
-        "headless": "true",
-        "shutdown_command": "shutdown.exe /s /t 0 /f",
-        "shutdown_timeout": "1h",
-        "arch": "x86",
-        "debugbuild": "false"
-         }
+    ]
 }
 
 

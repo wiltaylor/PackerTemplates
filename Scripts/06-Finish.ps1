@@ -1,10 +1,11 @@
-
+$config = [io.file]::ReadAllText("c:\config.psd1") | Invoke-Expression
 Write-Host "Cleaning up junk"
 
 Remove-item c:\vmtools.ps1
 Remove-Item "c:\rollup.msu" -ErrorAction SilentlyContinue
 Remove-Item "c:\wufix.msu" -ErrorAction SilentlyContinue
 Remove-Item "c:\sp.exe" -ErrorAction SilentlyContinue
+Remove-Item "c:\config.psd1" -ErrorAction SilentlyContinue
 
 Write-Host "Cleaning SxS..."
 Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase | out-null
@@ -24,18 +25,14 @@ foreach($folder in $cleanfolders)
     if(Test-Path $folder) 
     {
         Write-Host "Removing $folder"
-        try {
-              #&Takeown /d Y /R /f $_
-              #&Icacls $_ /GRANT:r administrators:F /T /c /q  2>&1 | Out-Null
-              Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue| Out-Null
-        }catch {
-            $global:error.RemoveAt(0)
-        }
+        Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue| Out-Null
     }
 }
 
+Write-Host "Running Defrag"
 Defrag.exe c: /H
 
+Write-Host "Zeroing out drive"
 cmd.exe /c powershell.exe -executionpolicy bypass -noprofile -noninteractive -file c:\zero.ps1 | out-null
 
 Write-Host "Blocking WinRM via Firewall."

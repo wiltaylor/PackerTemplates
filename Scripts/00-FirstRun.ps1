@@ -31,6 +31,7 @@ Copy-Item a:\vmtools.ps1 c:\vmtools.ps1
 Copy-Item a:\setupcomplete.cmd C:\Windows\Setup\Scripts\setupcomplete.cmd
 Copy-Item a:\postunattend.xml c:\postunattend.xml
 Copy-ITem a:\zero.ps1 c:\zero.ps1
+Copy-Item a:\config.psd1 c:\config.psd1
 
 #Disable Hybernate file
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name HibernateFileSizePercent -PropertyType DWORD -Value 0 -Force

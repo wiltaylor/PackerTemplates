@@ -1,0 +1,12 @@
+{
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x86/EN/7600.16385.090713-1255_x86fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENEVAL_EN_DVD.iso",
+    "iso_checksum": "971fc00183a52c152fe924a6b99fdec011a871c2",
+    "iso_checksum_type": "sha1",
+    "vbox_guestos": "Windows7",
+    "vm_name": "Windows 7 x86",
+    "headless": "true",
+    "shutdown_command": "shutdown.exe /s /t 0 /f",
+    "shutdown_timeout": "1h",
+    "arch": "x86",
+    "patchvm": "true"
+}
