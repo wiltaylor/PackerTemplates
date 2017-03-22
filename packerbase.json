@@ -40,7 +40,7 @@
             "VMTools\\virtualbox\\VMTools.ps1",
             "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
             "osconfig\\{{user `vm_name`}}\\config.psd1",
-            "osconfig\\{{user `arch`}}\\postunattend.xml",
+            "sysprep\\{{user `arch`}}\\postunattend.xml",
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
             "scripts\\zero.ps1"
@@ -55,7 +55,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ]
         },
         {
@@ -69,7 +70,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [0, 3010]
         },
@@ -84,7 +86,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -108,7 +111,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -132,7 +136,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -156,7 +161,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -180,7 +186,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -204,7 +211,8 @@
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ],
             "valid_exit_codes": [
                 0,
@@ -223,12 +231,24 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/06-Finish.ps1",
+            "script": "scripts/06-Clean.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
-                "patchvm={{user `patchvm`}}"
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
+            ]
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/07-Sysprep.ps1",
+            "elevated_user": "vagrant",
+            "elevated_password": "vagrant",
+            "environment_vars": [
+                "guestos={{user `vm_name`}}",
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
             ]
         }
     ],

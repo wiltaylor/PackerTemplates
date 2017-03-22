@@ -8,5 +8,6 @@
     "shutdown_command": "shutdown.exe /s /t 0 /f",
     "shutdown_timeout": "1h",
     "arch": "x86",
-    "patchvm": "true"
+    "patchvm": "true",
+    "cleanvm": "true"
 }
