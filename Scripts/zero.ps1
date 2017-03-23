@@ -1,4 +1,3 @@
-Write-Host "0ing out empty space..."
 $FilePath="c:\zero.tmp"
 $Volume = Get-WmiObject win32_logicaldisk -filter "DeviceID='C:'"
 $ArraySize= 64kb
@@ -10,8 +9,7 @@ $Stream= [io.File]::OpenWrite($FilePath)
 try {
    $CurFileSize = 0
     while($CurFileSize -lt $FileSize) {
-        Write-Host "Current Size: $FileSize\$CurFileSize"
-        $Stream.Write($ZeroArray,0, $ZeroArray.Length) | out-null
+        $Stream.Write($ZeroArray,0, $ZeroArray.Length)
         $CurFileSize +=$ZeroArray.Length
     }
 }

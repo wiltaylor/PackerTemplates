@@ -1,0 +1,15 @@
+{
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/5/3/C/53C31ED0-886C-4F81-9A38-F58CE4CE71E8/9200.16384.WIN8_RTM.120725-1247_X86FRE_ENTERPRISE_EVAL_EN-US-HRM_CENA_X86FREE_EN-US_DV5.ISO",
+    "iso_checksum": "b18e99c38177537dc2b115c3e23a8cac1c64e537",
+    "iso_checksum_type": "sha1",
+    "vbox_guestos": "Windows8",
+    "vm_name": "Windows 8 x86",
+    "headless": "true",
+    "shutdown_command": "shutdown.exe /s /t 0 /f",
+    "shutdown_timeout": "1h",
+    "arch": "x86",
+    "patchvm": "true",
+    "cleanvm": "true",
+    "boxtag": "none",
+    "cm": "nocm"
+}

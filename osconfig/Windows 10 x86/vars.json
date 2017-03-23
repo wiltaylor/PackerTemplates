@@ -1,0 +1,15 @@
+{
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/2/5/4/254230E8-AEA5-43C5-94F6-88CE222A5846/14393.0.160715-1616.RS1_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X86FRE_EN-US.ISO",
+    "iso_checksum": "0b8e56772c71dc7bb73654c61e53998a997e1e4d",
+    "iso_checksum_type": "sha1",
+    "vbox_guestos": "Windows10",
+    "vm_name": "Windows 10 x86",
+    "headless": "true",
+    "shutdown_command": "shutdown.exe /s /t 0 /f",
+    "shutdown_timeout": "1h",
+    "arch": "x86",
+    "patchvm": "true",
+    "cleanvm": "true",
+    "boxtag": "none",
+    "cm": "nocm"
+}

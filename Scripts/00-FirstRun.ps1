@@ -28,12 +28,13 @@ Restart-Service -Name WinRM
 
 #Copy Setup files off floppy
 Copy-Item a:\vmtools.ps1 c:\vmtools.ps1
-Copy-Item a:\setupcomplete.cmd C:\Windows\Setup\Scripts\setupcomplete.cmd
+Copy-Item a:\setupcomplete.cmd c:\setupcomplete.cmd
 Copy-Item a:\postunattend.xml c:\postunattend.xml
 Copy-Item a:\config.psd c:\config.psd1
+Copy-Item a:\shutdown.cmd c:\shutdown.cmd
 
-#Getting SDelete
-(New-Object System.Net.WebClient).DownloadFile("https://live.sysinternals.com/sdelete.exe", "c:\sdelete.exe")
+#Getting SDelete - Need to get v1.61 as current version has a hanging glitch.
+#(New-Object System.Net.WebClient).DownloadFile("https://web.archive.org/web/20141009082654/http://live.sysinternals.com/sdelete.exe", "c:\sdelete.exe")
 
 #Disable Hybernate file
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name HibernateFileSizePercent -PropertyType DWORD -Value 0 -Force
@@ -55,6 +56,12 @@ if(-not(Test-Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server')){
     New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Force | Out-Null
 }
 New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 0 -PropertyType DWORD -Force | Out-Null
+&netsh advfirewall firewall set rule name="Remote Desktop (TCP-In)" new action=allow
+&netsh advfirewall firewall set rule name="Remote Desktop (TCP-In)" new enable=yes
+#Extra rules required for Windows 10.
+&netsh advfirewall firewall set rule name="Remote Desktop - User Mode (TCP-In)" new action=allow 
+&netsh advfirewall firewall set rule name="Remote Desktop - User Mode (TCP-In)" new enable=yes
+
 
 #Install Chocolatey
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))

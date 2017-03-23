@@ -6,9 +6,9 @@ if($config.ServicePackURL -ne $null -and $env:patchvm -eq "true")
     (New-Object System.Net.WebClient).DownloadFile($config.ServicePackURL, "c:\sp.exe")
 
     Write-Host "Extracting Package"
-    &$config.ServicePackExtractCommand | Out-Null
+    &c:\sp.exe /x:c:\servicepack | Out-Null
 
     Write-Host "Installing Package..."
-    &$config.ServicePackInstallCommand | Out-Null
+    &c:\servicepack\SPInstall.exe /nodialog /norestart /quiet | Out-Null
     Write-Host "Package installation completed...restarting..."
 }

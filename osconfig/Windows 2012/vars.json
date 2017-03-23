@@ -1,0 +1,15 @@
+{
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/D/A/6DAB58BA-F939-451D-9101-7DE07DC09C03/9200.16384.WIN8_RTM.120725-1247_X64FRE_SERVER_EVAL_EN-US-HRM_SSS_X64FREE_EN-US_DV5.ISO",
+    "iso_checksum": "922b365c3360ce630f6a4b4f2f3c79e66165c0fb",
+    "iso_checksum_type": "sha1",
+    "vbox_guestos": "Windows2012_64",
+    "vm_name": "Windows 2012",
+    "headless": "true",
+    "shutdown_command": "shutdown.exe /s /t 0 /f",
+    "shutdown_timeout": "1h",
+    "arch": "x64",
+    "patchvm": "true",
+    "cleanvm": "true",
+    "boxtag": "none",
+    "cm": "nocm"
+}

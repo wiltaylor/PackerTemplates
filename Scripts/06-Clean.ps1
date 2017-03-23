@@ -40,9 +40,34 @@ if($env:cleanvm -eq "true") {
         }
     }
     Write-Host "Degraging disk"
-    &Defrag.exe c: /H
+    &Defrag.exe c: /H | Out-Null
 
     Write-Host "Zeroing out free space..."
-    &c:\\sdelete.exe -accepteula -z c:
-    Remove-Item "c:\sdelete" -ErrorAction SilentlyContinue | Out-Null
+    $FilePath="c:\zero.tmp"
+    $Volume = Get-WmiObject win32_logicaldisk -filter "DeviceID='C:'"
+    $ArraySize= 64kb
+    $SpaceToLeave= $Volume.Size * 0.05
+    $FileSize= $Volume.FreeSpace - $SpacetoLeave
+    $ZeroArray= new-object byte[]($ArraySize)
+
+    $Stream= [io.File]::OpenWrite($FilePath)
+    try {
+    $CurFileSize = 0
+        while($CurFileSize -lt $FileSize) {
+            $Stream.Write($ZeroArray,0, $ZeroArray.Length)
+            $CurFileSize +=$ZeroArray.Length
+            Write-Host "Cleaning space $CurFileSize of $FileSize"
+        }
+    }
+    finally {
+        if($Stream) {
+            $Stream.Close()
+        }
+    }
+
+    Write-Host "Finish Free space clean..."
+    Remove-Item $FilePath -Force  
+
+    Start-Sleep 30
+
 }

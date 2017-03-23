@@ -9,5 +9,7 @@
     "shutdown_timeout": "1h",
     "arch": "x86",
     "patchvm": "true",
-    "cleanvm": "true"
+    "cleanvm": "true",
+    "boxtag": "none",
+    "cm": "nocm"
 }

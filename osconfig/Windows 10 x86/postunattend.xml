@@ -22,6 +22,8 @@
                 <ProtectYourPC>1</ProtectYourPC>
                 <NetworkLocation>Home</NetworkLocation>
                 <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <SkipMachineOOBE>true</SkipMachineOOBE>
+                <SkipUserOOBE>true</SkipUserOOBE>
             </OOBE>
             <TimeZone>UTC</TimeZone>
             <UserAccounts>
