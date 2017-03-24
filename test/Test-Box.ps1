@@ -1,4 +1,4 @@
-param($boxpath, $hypervisor, $checkpatches, [switch]$HaltAtEnd)
+param($boxpath, $hypervisor, [switch]$checkpatches, [switch]$HaltAtEnd)
 
 $reporoot = Resolve-Path "$PSScriptRoot\.."
 $boxpath = $boxpath.Replace("\", "/")

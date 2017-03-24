@@ -49,8 +49,8 @@
                     <InstallToAvailablePartition>false</InstallToAvailablePartition>
                     <InstallFrom>
                         <MetaData wcm:action="add">
-                            <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Longhorn SERVERSTANDARDCORE</Value>
+                            <Key>/IMAGE/INDEX</Key>
+                            <Value>2</Value>
                         </MetaData>
                     </InstallFrom>
                 </OSImage>
@@ -108,21 +108,15 @@
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c DISM /Online /Enable-Feature /FeatureName:NetFx2-ServerCore</CommandLine>
-                    <Description>Enabling .NET 2.0</Description>
+                    <CommandLine>cmd.exe /c a:\00-bootstrap.cmd</CommandLine>
+                    <Description>Enable Powershell</Description>
                     <Order>1</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c DISM /Online /Enable-Feature /FeatureName: MicrosoftWindowsPowerShell</CommandLine>
+                    <CommandLine>cmd.exe /c C:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy bypass -noprofile -noninteractive -file a:\00-FirstRun.ps1</CommandLine>
                     <Description>Running Setup script</Description>
                     <Order>2</Order>
-                    <RequiresUserInput>false</RequiresUserInput>
-                </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c powershell.exe -ExecutionPolicy bypass -noprofile -noninteractive -file a:\00-FirstRun.ps1</CommandLine>
-                    <Description>Running Setup script</Description>
-                    <Order>3</Order>
                     <RequiresUserInput>false</RequiresUserInput>
                 </SynchronousCommand>
             </FirstLogonCommands>

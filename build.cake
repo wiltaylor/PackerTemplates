@@ -38,7 +38,7 @@ Task("Build.Base")
     .IsDependentOn("Build.Base.Windows10x86")
     .IsDependentOn("Build.Base.Windows10x64")
     .IsDependentOn("Build.Base.Windows2008R2")
-    .IsDependentOn("Build.Base.Windows2008R2Core")
+    //.IsDependentOn("Build.Base.Windows2008R2Core")
     .IsDependentOn("Build.Base.Windows2012")
     .IsDependentOn("Build.Base.Windows2012Core")
     .IsDependentOn("Build.Base.Windows2012R2")
@@ -64,8 +64,8 @@ Task("Build.Base.Windows10x64")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2008R2")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2008R2Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+//Task("Build.Base.Windows2008R2Core")
+//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012Core")
@@ -91,7 +91,7 @@ Task("Build.Patch")
     .IsDependentOn("Build.Patch.Windows10x86")
     .IsDependentOn("Build.Patch.Windows10x64")
     .IsDependentOn("Build.Patch.Windows2008R2")
-    .IsDependentOn("Build.Patch.Windows2008R2Core")
+    //.IsDependentOn("Build.Patch.Windows2008R2Core")
     .IsDependentOn("Build.Patch.Windows2012")
     .IsDependentOn("Build.Patch.Windows2012Core")
     .IsDependentOn("Build.Patch.Windows2012R2")
@@ -117,8 +117,8 @@ Task("Build.Patch.Windows10x64")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x64\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Patch.Windows2008R2")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2008R2Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
+//Task("Build.Patch.Windows2008R2Core")
+//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Patch.Windows2012")
     .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Patch.Windows2012Core")

@@ -41,6 +41,7 @@
             "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
             "osconfig\\{{user `vm_name`}}\\config.psd1",
             "osconfig\\{{user `vm_name`}}\\postunattend.xml",
+            "scripts\\00-bootstrap.cmd",
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
             "scripts\\shutdown.cmd"
