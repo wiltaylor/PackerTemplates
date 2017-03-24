@@ -9,15 +9,7 @@ var RepoRootFolder = MakeAbsolute(Directory("."));
 var osdir = RepoRootFolder + "/osconfig";
 var PackerCacheFolder = RepoRootFolder + "/packer_cache";
 var BoxFolder = RepoRootFolder + "/box";
-var oslist = GetOSList();
 var hypervisors = GetHypervisors();
-
-Task("ListOS")
-    .Does(() => {
-        Information("Available OS Templates:");
-        foreach(var os in oslist)
-            Information(os);
-    });
 
 Task("ListHypervisor")
     .Does(() => {
@@ -55,37 +47,37 @@ Task("Build.Base")
     .IsDependentOn("Build.Base.Windows2016Core");
 
 Task("Build.Base.Windows7x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 7 x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows7x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 7 x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows8x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 8 x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows8x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 8 x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows81x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 8.1 x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows81x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 8.1 x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows10x86") 
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 10 x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows10x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 10 x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2008R2")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2008 R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2008R2Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2008 R2 Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2012\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2012 Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012R2")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2012 R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2012R2Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2012 R2 Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2016")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2016\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 Task("Build.Base.Windows2016Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows 2016 Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 //Task("Build.Base.NanoServer")
 //    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\NanoServer\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
 

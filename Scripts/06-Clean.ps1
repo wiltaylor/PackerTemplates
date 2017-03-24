@@ -1,9 +1,9 @@
 if($env:cleanvm -eq "true") {
     Write-Host "Cleaning up junk"
 
-    Remove-item c:\vmtools.ps1
-    Remove-Item "c:\rollup.msu" -ErrorAction SilentlyContinue
-    Remove-Item "c:\wufix.msu" -ErrorAction SilentlyContinue
+    Remove-item "c:\vmtools.ps1" -ErrorAction SilentlyContinue
+    Remove-Item "c:\rollup.*" -ErrorAction SilentlyContinue
+    Remove-Item "c:\wufix.*" -ErrorAction SilentlyContinue
     Remove-Item "c:\sp.exe" -ErrorAction SilentlyContinue
     Remove-Item "c:\config.psd1" -ErrorAction SilentlyContinue
 
@@ -30,16 +30,14 @@ if($env:cleanvm -eq "true") {
                 if(Test-Path $folder) 
                 {
                     Write-Host "Removing $folder"
-
-                        Remove-Item $folder -Recurse -Force -ErrorAction SilentlyContinue| Out-Null
-
+                    Remove-Item $folder -Recurse -Force -ErrorAction SilentlyContinue
                 }
             }
         } catch {
             #do nothing. This is to stop exceptions from failing process.
         }
     }
-    Write-Host "Degraging disk"
+    Write-Host "Defraging disk"
     &Defrag.exe c: /H | Out-Null
 
     Write-Host "Zeroing out free space..."
@@ -56,7 +54,10 @@ if($env:cleanvm -eq "true") {
         while($CurFileSize -lt $FileSize) {
             $Stream.Write($ZeroArray,0, $ZeroArray.Length)
             $CurFileSize +=$ZeroArray.Length
-            Write-Host "Cleaning space $CurFileSize of $FileSize"
+
+            $percent = [Math]::Round($CurFileSize / $FileSize * 100)
+
+            Write-Host "Cleaning space [$percent%]"
         }
     }
     finally {
@@ -69,5 +70,4 @@ if($env:cleanvm -eq "true") {
     Remove-Item $FilePath -Force  
 
     Start-Sleep 30
-
 }
