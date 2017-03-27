@@ -47,10 +47,10 @@ function Install-Updates {
 
         if(-not($skippatch)){
             if($u.IsDownloaded){
-                Write-Host "Patch [$patchcount\$patchindex] $($u.Title) is already downloaded!"
+                Write-Host "Patch [$patchindex/$patchcount] $($u.Title) is already downloaded!"
                 $AlreadyDownloaded.Add($u) | out-null
             }else{
-                Write-Host "Patch [$patchcount\$patchindex] $($u.Title) needs to be downloaded!"
+                Write-Host "Patch [$patchindex/$patchcount] $($u.Title) needs to be downloaded!"
                 $UpdateCollection.Add($u) | out-null
             }
         }
@@ -118,7 +118,7 @@ function Install-Updates {
         $currentupdate = New-Object -ComObject Microsoft.Update.UpdateColl
         $currentupdate.Add($u) | Out-Null
 
-        Write-Host "Installing [$patchcount\$patchindex] $($u.Title)"
+        Write-Host "Installing [$patchindex/$patchcount] $($u.Title)"
         try 
         {                
             $installer.AllowSourcePrompts = $false
