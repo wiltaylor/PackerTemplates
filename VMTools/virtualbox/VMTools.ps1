@@ -7,3 +7,5 @@ if(test-path E:\ -Filter *.cer)
 Start-Process -FilePath "E:\VBoxWindowsAdditions.exe" -ArgumentList "/S" -Wait
 
 Write-Host "Virtualbox Guest Additions Installed."
+
+Start-Sleep -Seconds 120

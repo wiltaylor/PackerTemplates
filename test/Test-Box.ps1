@@ -1,4 +1,4 @@
-param($boxpath, $hypervisor, [switch]$checkpatches, [switch]$HaltAtEnd, [switch]$showstdio)
+param($boxpath, $hypervisor, $boxname, [switch]$checkpatches, [switch]$HaltAtEnd, [switch]$showstdio)
 
 $reporoot = Resolve-Path "$PSScriptRoot\.."
 $boxpath = $boxpath.Replace("\", "/")
@@ -16,20 +16,21 @@ $result = Describe "Test box settings" {
     BeforeAll {
         Write-Text "Please wait loading box..."
         #Setup vagrant folder structure and copy in vagrant file.
-        Remove-item "$reporoot\boxtest" -Force -Recurse -ErrorAction SilentlyContinue
-        New-item "$reporoot\boxtest" -ItemType Directory
-        New-item "$reporoot\boxtest\vagrant" -ItemType Directory
-        New-item "$reporoot\boxtest\vagrantboxdata" -ItemType Directory
-        Copy-item "$reporoot\Test\Vagrantfile" "$reporoot\boxtest\vagrant\Vagrantfile"
+        Remove-item "$reporoot\boxtest\$boxname" -Force -Recurse -ErrorAction SilentlyContinue
+        New-item "$reporoot\boxtest" -ItemType Directory -ErrorAction SilentlyContinue
+        New-item "$reporoot\boxtest\$boxname" -ItemType Directory -ErrorAction SilentlyContinue
+        New-item "$reporoot\boxtest\$boxname\vagrant" -ItemType Directory
+        New-item "$reporoot\boxtest\$boxname\vagrantboxdata" -ItemType Directory
+        Copy-item "$reporoot\Test\Vagrantfile" "$reporoot\boxtest\$boxname\vagrant\Vagrantfile"
 
         #Setup vagrant root to test folder. This is so tests dont impact installed vagrant environment.
-        $env:VAGRANT_HOME = "$reporoot\boxtest\vagrantboxdata"
+        $env:VAGRANT_HOME = "$reporoot\boxtest\$boxname\vagrantboxdata"
 
         #Import testbox
         &vagrant box add sutbox $boxpath | Write-Text
 
         #Start VM
-        Set-Location "$reporoot\boxtest\vagrant" 
+        Set-Location "$reporoot\boxtest\$boxname\vagrant" 
         &vagrant up | Write-Text
     }
 
@@ -42,7 +43,7 @@ $result = Describe "Test box settings" {
 
         #Nuke test folder so nothing is left over.
         Set-Location $DirectoryBeforeTest
-        Remove-item "$reporoot\boxtest" -Force -Recurse -ErrorAction SilentlyContinue    
+        Remove-item "$reporoot\$boxname\boxtest" -Force -Recurse -ErrorAction SilentlyContinue    
     }
 
     It "RDP Port accessable" {

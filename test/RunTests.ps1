@@ -1,9 +1,10 @@
- param($box, $hypervisor)
+ param($box, $hypervisor, $boxname)
  
  
  $Parameters = @{
       boxpath = $box
       Hypervisor = $hypervisor
+      boxname = $boxname
 }
 
 $script = @{

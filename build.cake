@@ -6,20 +6,13 @@ Author: Wil Taylor
 
 var target = Argument("target", "Default");
 var cm = Argument("cm", "nocm");
+var hypervisor = Argument("hypervisor", "virtualbox");
 
 var RepoRootFolder = MakeAbsolute(Directory(".")); 
 var osdir = RepoRootFolder + "/osconfig";
 var PackerCacheFolder = RepoRootFolder + "/packer_cache";
 var BoxFolder = RepoRootFolder + "/box";
-var hypervisors = GetHypervisors();
 var testFolder = RepoRootFolder + "/test";
-
-Task("ListHypervisor")
-    .Does(() => {
-        Information("Available Hypervisors:");
-        foreach(var h in hypervisors)
-            Information(h);
-    });
 
 Task("Clean")
     .IsDependentOn("Clean.PackerCache")
@@ -38,8 +31,8 @@ var patchbase = Task("Build.Patch");
 Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
 {
     var osName = System.IO.Path.GetFileName(folder);
-    var baseboxfile = RepoRootFolder + "/box/" + osName + "-base-" + cm + "-virtualbox.box";
-    var patchboxfile = RepoRootFolder + "/box/" + osName + "-patch-" + cm + "-virtualbox.box";
+    var baseboxfile = RepoRootFolder + "/box/" + osName + "-base-" + cm + "-" + hypervisor + ".box";
+    var patchboxfile = RepoRootFolder + "/box/" + osName + "-patch-" + cm + "-" + hypervisor +".box";
 
     if(osName.ToLower().Contains("disabled"))
         return;
@@ -58,7 +51,7 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
         .WithCriteria(FileExists(baseboxfile))
         .Does(() => 
         {
-            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor virtualbox");
+            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor " + hypervisor + " -boxname Base." + osName);
             if(ret != 0)
                 throw new Exception("Tests failed!");
         });
@@ -76,19 +69,19 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
 
     Task("Test.Patch." + osName)
         .WithCriteria(FileExists(patchboxfile))
-        .Does(() => StartPowershellFile(testFolder + "/Test-Box.ps1", 
-            args => args
-                .Append("boxpath",patchboxfile)
-                .Append("hypervisor","virtualbox")
-                .Append("checkpatches", true)
-            ));
+        .Does(() => 
+        {
+            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor " + hypervisor + " -boxname Patch." + osName);
+            if(ret != 0)
+                throw new Exception("Tests failed!");
+        });           
 
 });
 
 void StartPacker(string os, string tag, bool debug=false, bool patch=false) 
 {
 
-    var command = "build -var-file=\"osconfig\\" + os + "\\vars.json\" -var boxtag=" + tag + " -var cm=" + cm + " "; 
+    var command = "build -var-file=\"osconfig\\" + os + "\\vars.json\" -var boxtag=" + tag + " -var cm=" + cm + " -only=" + hypervisor + " "; 
 
     if(patch)
         command += "-var patchvm=true ";
@@ -101,22 +94,6 @@ void StartPacker(string os, string tag, bool debug=false, bool patch=false)
     command += " .\\packerbase.json";
 
     StartProcess("packer", command);
-}
-
-string[] GetHypervisors()
-{
-    var result = new List<string>();
-
-    if(FileExists(@"C:\Program Files\Oracle\VirtualBox\VirtualBox.exe"))
-        result.Add("virtualbox");
-
-    if(FileExists(@"C:\Program Files (x86)\VMware\VMware Workstation\vmware.exe"))
-        result.Add("vmwareworkstation");
-
-    if(FileExists(@"C:\Windows\system32\vmcompute.exe"))
-    result.Add("hyperv");
-
-    return result.ToArray();
 }
 
 /*****************************************************************************************************
