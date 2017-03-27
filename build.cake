@@ -24,6 +24,11 @@ Task("Clean.Box")
 Task("Clean.PackerCache")
     .Does(() => CleanDirectory(PackerCacheFolder));
 
+Task("VMware.CopyTools")
+    .WithCriteria(hypervisor == "vmware")
+    .WithCriteria(FileExists("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe"))
+    .WithCriteria(!FileExists(RepoRootFolder + "/vmtools/vmware/vmtools.exe"))
+    .Does(() => CopyFile("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe", RepoRootFolder + "/vmtools/vmware/vmtools.exe"));
 
 var buildbase = Task("Build.Base");
 var patchbase = Task("Build.Patch");
@@ -40,10 +45,12 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
     buildbase.IsDependentOn("Build.Base." + osName);
 
     Task("Build.Base." + osName)
+        .IsDependentOn("VMware.CopyTools")
         .WithCriteria(!FileExists(baseboxfile))
         .Does(() => StartPacker(osName, "base"));
 
     Task("Debug.Base." + osName)
+        .IsDependentOn("VMware.CopyTools")
         .WithCriteria(!FileExists(baseboxfile))
         .Does(() => StartPacker(osName, "base", debug: true));
 
@@ -51,7 +58,7 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
         .WithCriteria(FileExists(baseboxfile))
         .Does(() => 
         {
-            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor " + hypervisor + " -boxname Base." + osName);
+            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor " + hypervisor + " -boxname Base." + osName + "." + hypervisor);
             if(ret != 0)
                 throw new Exception("Tests failed!");
         });
@@ -60,10 +67,12 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
     patchbase.IsDependentOn("Build.Patch." + osName);
 
     Task("Build.Patch." + osName)
+        .IsDependentOn("VMware.CopyTools")
         .WithCriteria(!FileExists(patchboxfile))
         .Does(() => StartPacker(osName, "patch", patch: true));
 
     Task("Debug.Patch." + osName)
+        .IsDependentOn("VMware.CopyTools")
         .WithCriteria(!FileExists(patchboxfile))
         .Does(() => StartPacker(osName, "patch", debug: true, patch: true));
 
@@ -71,7 +80,7 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
         .WithCriteria(FileExists(patchboxfile))
         .Does(() => 
         {
-            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor " + hypervisor + " -boxname Patch." + osName);
+            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + patchboxfile + "\" -hypervisor " + hypervisor + " -boxname Patch." + osName + "." + hypervisor);
             if(ret != 0)
                 throw new Exception("Tests failed!");
         });           

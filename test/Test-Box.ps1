@@ -20,18 +20,26 @@ $result = Describe "Test box settings" {
         New-item "$reporoot\boxtest" -ItemType Directory -ErrorAction SilentlyContinue
         New-item "$reporoot\boxtest\$boxname" -ItemType Directory -ErrorAction SilentlyContinue
         New-item "$reporoot\boxtest\$boxname\vagrant" -ItemType Directory
-        New-item "$reporoot\boxtest\$boxname\vagrantboxdata" -ItemType Directory
+        #New-item "$reporoot\boxtest\$boxname\vagrantboxdata" -ItemType Directory
         Copy-item "$reporoot\Test\Vagrantfile" "$reporoot\boxtest\$boxname\vagrant\Vagrantfile"
 
         #Setup vagrant root to test folder. This is so tests dont impact installed vagrant environment.
-        $env:VAGRANT_HOME = "$reporoot\boxtest\$boxname\vagrantboxdata"
+        #$env:VAGRANT_HOME = "$reporoot\boxtest\$boxname\vagrantboxdata"
 
         #Import testbox
+        &vagrant box remove sutbox -f | Write-Text
         &vagrant box add sutbox $boxpath | Write-Text
 
         #Start VM
-        Set-Location "$reporoot\boxtest\$boxname\vagrant" 
-        &vagrant up | Write-Text
+        Set-Location "$reporoot\boxtest\$boxname\vagrant"
+
+        if($hypervisor -eq "virtualbox") {
+            &vagrant up --provider virtualbox | Write-Text
+        }
+        
+        if($hypervisor -eq "vmware") {
+            &vagrant up --provider vmware_workstation | Write-Text
+        }
     }
 
     AfterAll {

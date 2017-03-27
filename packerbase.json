@@ -2,17 +2,18 @@
     "builders": [
     {
         "type": "vmware-iso",
+        "name": "vmware",
         "guest_os_type": "{{user `vmware_guestos`}}",
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "{{user `iso_checksum_type`}}",
         "vmx_data" : {
             "memsize" : "2048",
-            "numvcpus": "2"
+            "numvcpus": "2",
+            "scsi0.virtualDev": "{{user `vmware_scsibus`}}"
         },
-        "output_directory": "./temp/output-{{user `vm_name`}}{{.Provider}}",
+        "output_directory": "./temp/output-{{user `vm_name`}}vmware",
         "vm_name": "{{user `vm_name`}}",
-        "tools_upload_flavor": "windows",
         "headless": "{{user `headless` }}",
         "communicator": "winrm",
         "winrm_username": "vagrant",
@@ -21,18 +22,20 @@
         "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
         "shutdown_timeout": "{{user `shutdown_timeout`}}",
         "floppy_files": [
-            "VMTools\\virtualbox\\VMTools.ps1",
+            "VMTools\\vmware\\VMTools.ps1",
             "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
             "osconfig\\{{user `vm_name`}}\\config.psd1",
             "osconfig\\{{user `vm_name`}}\\postunattend.xml",
             "scripts\\00-bootstrap.cmd",
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
-            "scripts\\shutdown.cmd"
+            "scripts\\shutdown.cmd",
+            "vmtools\\vmware\\vmtools.exe"
         ]
     },
     {
         "type": "virtualbox-iso",
+        "name": "virtualbox",
         "guest_os_type": "{{user `vbox_guestos`}}",
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
@@ -57,7 +60,7 @@
             "2"
             ]
         ],
-        "output_directory": "./temp/output-{{user `vm_name`}}{{.Provider}}",
+        "output_directory": "./temp/output-{{user `vm_name`}}virtualbox",
         "vm_name": "{{user `vm_name`}}",
         "guest_additions_mode": "attach",
         "headless": "{{user `headless` }}",
