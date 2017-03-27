@@ -63,8 +63,7 @@ New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' 
 &netsh advfirewall firewall set rule name="Remote Desktop - User Mode (TCP-In)" new enable=yes
 
 
-#Install Chocolatey
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+Start-Sleep -Seconds 60
 
 #Enable WinRM Firewall Port
 &netsh advfirewall firewall set rule name="WinRM-HTTP" new action=allow

@@ -1,12 +1,20 @@
-param($boxpath, $hypervisor, [switch]$checkpatches, [switch]$HaltAtEnd)
+param($boxpath, $hypervisor, [switch]$checkpatches, [switch]$HaltAtEnd, [switch]$showstdio)
 
 $reporoot = Resolve-Path "$PSScriptRoot\.."
 $boxpath = $boxpath.Replace("\", "/")
 $DirectoryBeforeTest = Get-Location
 
-Describe "Test box settings" {
+function Write-Text {
+    param([Parameter(ValueFromPipeline=$true, 
+    ValueFromPipelineByPropertyName=$true,Position = 0 )][string]$value)
+
+    if($showstdio) { $value | Write-Host}
+
+}
+
+$result = Describe "Test box settings" {
     BeforeAll {
-        Write-Host "Please wait loading box..."
+        Write-Text "Please wait loading box..."
         #Setup vagrant folder structure and copy in vagrant file.
         Remove-item "$reporoot\boxtest" -Force -Recurse -ErrorAction SilentlyContinue
         New-item "$reporoot\boxtest" -ItemType Directory
@@ -18,19 +26,19 @@ Describe "Test box settings" {
         $env:VAGRANT_HOME = "$reporoot\boxtest\vagrantboxdata"
 
         #Import testbox
-        &vagrant box add sutbox $boxpath | Write-Host
+        &vagrant box add sutbox $boxpath | Write-Text
 
         #Start VM
         Set-Location "$reporoot\boxtest\vagrant" 
-        &vagrant up | Write-Host
+        &vagrant up | Write-Text
     }
 
     AfterAll {
         if($HaltAtEnd) { Read-Host "Press enter key to destroy environment"}
         
-        Write-Host "Please wait destroying test environment..."
+        Write-Text "Please wait destroying test environment..."
         #Destory VM and remove box from vagrant.
-        &vagrant destroy -f | Write-Host
+        &vagrant destroy -f | Write-Text
 
         #Nuke test folder so nothing is left over.
         Set-Location $DirectoryBeforeTest
@@ -42,7 +50,7 @@ Describe "Test box settings" {
         
         $vagrantdata = &vagrant port
         $port = [int]::Parse([regex]::Match($vagrantdata, ".*3389 \(guest\) => ([0-9]{1,7}) \(host\).*").captures.groups[1].value)
-        Write-Host "Bound Local Host Port: $port"
+        Write-Text "Bound Local Host Port: $port"
 
         #Testing if a TCP connection can be made.
         (Test-NetConnection -ComputerName "127.0.0.1" -Port $port).TcpTestSucceeded | should be $true
@@ -50,7 +58,7 @@ Describe "Test box settings" {
 
     It "Can connect via WinRM" {
         $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "write-host testing"))
-        $vagrantdata | Write-Host
+        $vagrantdata | Write-Text
 
         $vagrantdata | Should BeLike "*testing*"
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -58,7 +66,7 @@ Describe "Test box settings" {
 
     It "Has vagrant account in local admin" {
         $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "net user vagrant"))
-        $vagrantdata | Write-Host
+        $vagrantdata | Write-Text
 
         $vagrantdata | Should BeLike "*Administrators*"
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -66,9 +74,9 @@ Describe "Test box settings" {
 
     It "Has Windows Update set to Manual" {
         $auoptions = [string]::Join("`n", (&vagrant powershell -c "`$x = 'AUOptions:' + (Get-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update').AUOptions;`$x"))
-        $auoptions | Write-Host
+        $auoptions | Write-Text
         $austate = [string]::Join("`n", (&vagrant powershell -c "`$x = 'AUState:' + (Get-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update').AUState;`$x"))
-        $austate | Write-Host
+        $austate | Write-Text
 
         $auoptions | Should BeLike "*AUOptions:1*"
         $auoptions | Should BeLike "*executed succesfully with output code 0.*"
@@ -88,14 +96,14 @@ Describe "Test box settings" {
 
     It "Has Chocolatey Installed" {
         $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "&choco config"))
-        $vagrantdata | Write-Host
+        $vagrantdata | Write-Text
 
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
     }
 
     It "Has no hiberfil.sys file" {
         $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "Test-Path c:\\hiberfil.sys"))
-        $vagrantdata | Write-Host
+        $vagrantdata | Write-Text
 
         $vagrantdata | Should BeLike "*False*"
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -105,7 +113,7 @@ Describe "Test box settings" {
     {
         It "Has Powershell 5+ installed" {
             $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "`$PSVersionTable.PSVersion.Major -ge 5"))
-            $vagrantdata | Write-Host
+            $vagrantdata | Write-Text
 
             $vagrantdata | Should BeLike "*True*"
             $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -114,7 +122,7 @@ Describe "Test box settings" {
 
     It "Has Powershell execution policy set to unrestricted" {
         $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "Get-ExecutionPolicy -Scope LocalMachine"))
-        $vagrantdata | Write-Host
+        $vagrantdata | Write-Text
 
         $vagrantdata | Should BeLike "*Unrestricted*"
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -125,7 +133,7 @@ Describe "Test box settings" {
         if($hypervisor -eq "virtualbox") 
         {
             $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "Test-Path 'C:\\Program Files\\Oracle\\VirtualBox Guest Additions\\VBoxControl.exe'"))
-            $vagrantdata | Write-Host
+            $vagrantdata | Write-Text
 
             $vagrantdata | Should BeLike "*True*"
             $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
@@ -149,11 +157,17 @@ Describe "Test box settings" {
 
         foreach($p in $cleanobjects) {
             $vagrantdata = [string]::Join("`n", (&vagrant powershell -c "Test-Path '$p'"))
-            $vagrantdata | Write-Host
+            $vagrantdata | Write-Text
 
             $vagrantdata | Should BeLike "*False*"
             $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
 
         }
     }
+
+    <#It "testing fail" {
+        $false | should be $true
+    }#>
 }
+
+$result | Format-List

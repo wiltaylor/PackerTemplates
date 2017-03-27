@@ -2,6 +2,8 @@
 Packer Build Script
 Author: Wil Taylor
 *****************************************************************************************************/
+#addin "Cake.Powershell"
+
 var target = Argument("target", "Default");
 var cm = Argument("cm", "nocm");
 
@@ -10,6 +12,7 @@ var osdir = RepoRootFolder + "/osconfig";
 var PackerCacheFolder = RepoRootFolder + "/packer_cache";
 var BoxFolder = RepoRootFolder + "/box";
 var hypervisors = GetHypervisors();
+var testFolder = RepoRootFolder + "/test";
 
 Task("ListHypervisor")
     .Does(() => {
@@ -28,126 +31,77 @@ Task("Clean.Box")
 Task("Clean.PackerCache")
     .Does(() => CleanDirectory(PackerCacheFolder));
 
-Task("Build.Base")
-    .IsDependentOn("Build.Base.Windows7x86")
-    .IsDependentOn("Build.Base.Windows7x64")
-    .IsDependentOn("Build.Base.Windows8x86")
-    .IsDependentOn("Build.Base.Windows8x64")
-    .IsDependentOn("Build.Base.Windows81x86")
-    .IsDependentOn("Build.Base.Windows81x64")
-    .IsDependentOn("Build.Base.Windows10x86")
-    .IsDependentOn("Build.Base.Windows10x64")
-    .IsDependentOn("Build.Base.Windows2008R2")
-    //.IsDependentOn("Build.Base.Windows2008R2Core")
-    .IsDependentOn("Build.Base.Windows2012")
-    .IsDependentOn("Build.Base.Windows2012Core")
-    .IsDependentOn("Build.Base.Windows2012R2")
-    .IsDependentOn("Build.Base.Windows2012R2Core")
-    .IsDependentOn("Build.Base.Windows2016")
-    .IsDependentOn("Build.Base.Windows2016Core");
 
-Task("Build.Base.Windows7x86")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows7x86-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows7x64")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows7x64-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows8x86")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows8x86-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows8x64")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows8x64-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows81x86")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows8.1x86-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows81x64")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows8.1x64-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows10x86") 
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows10x86-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x86\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows10x64")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows10x64-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x64\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2008R2")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2008R2-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-//Task("Build.Base.Windows2008R2Core")
-//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2012")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2012-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2012Core")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2012Core-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2012R2")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2012R2-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2012R2Core")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2012R2Core-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2016")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2016-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Base.Windows2016Core")
-    .WithCriteria(!FileExists(RepoRootFolder + "/box/Windows2016Core-base-" + cm + "-virtualbox.box"))
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016Core\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
-//Task("Build.Base.NanoServer")
-//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\NanoServer\\vars.json\" -var patchvm=false -var boxtag=base -var cm=" + cm +" .\\packerbase.json"));
+var buildbase = Task("Build.Base");
+var patchbase = Task("Build.Patch");
 
-Task("Build.Patch")
-    .IsDependentOn("Build.Patch.Windows7x86")
-    .IsDependentOn("Build.Patch.Windows7x64")
-    .IsDependentOn("Build.Patch.Windows8x86")
-    .IsDependentOn("Build.Patch.Windows8x64")
-    .IsDependentOn("Build.Patch.Windows81x86")
-    .IsDependentOn("Build.Patch.Windows81x64")
-    .IsDependentOn("Build.Patch.Windows10x86")
-    .IsDependentOn("Build.Patch.Windows10x64")
-    .IsDependentOn("Build.Patch.Windows2008R2")
-    //.IsDependentOn("Build.Patch.Windows2008R2Core")
-    .IsDependentOn("Build.Patch.Windows2012")
-    .IsDependentOn("Build.Patch.Windows2012Core")
-    .IsDependentOn("Build.Patch.Windows2012R2")
-    .IsDependentOn("Build.Patch.Windows2012R2Core")
-    .IsDependentOn("Build.Patch.Windows2016")
-    .IsDependentOn("Build.Patch.Windows2016Core");
+Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
+{
+    var osName = System.IO.Path.GetFileName(folder);
+    var baseboxfile = RepoRootFolder + "/box/" + osName + "-base-" + cm + "-virtualbox.box";
+    var patchboxfile = RepoRootFolder + "/box/" + osName + "-patch-" + cm + "-virtualbox.box";
 
-Task("Build.Patch.Windows7x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x86\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows7x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows7x64\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows8x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x86\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows8x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8x64\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows81x86")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x86\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows81x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows8.1x64\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows10x86") 
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x86\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows10x64")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows10x64\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2008R2")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-//Task("Build.Patch.Windows2008R2Core")
-//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2008R2Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2012")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2012Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2012R2")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2012R2Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2012R2Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2016")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-Task("Build.Patch.Windows2016Core")
-    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\Windows2016Core\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
-//Task("Build.Patch.NanoServer")
-//    .Does(() => StartProcess("packer", "build -var-file=\"osconfig\\NanoServer\\vars.json\" -var boxtag=patchedWMF5 -var cm=" + cm +" .\\packerbase.json"));
+    if(osName.ToLower().Contains("disabled"))
+        return;
+
+    buildbase.IsDependentOn("Build.Base." + osName);
+
+    Task("Build.Base." + osName)
+        .WithCriteria(!FileExists(baseboxfile))
+        .Does(() => StartPacker(osName, "base"));
+
+    Task("Debug.Base." + osName)
+        .WithCriteria(!FileExists(baseboxfile))
+        .Does(() => StartPacker(osName, "base", debug: true));
+
+    Task("Test.Base." + osName)
+        .WithCriteria(FileExists(baseboxfile))
+        .Does(() => 
+        {
+            var ret = StartProcess("powershell", "-executionpolicy bypass -noprofile -noninteractive -file \"" + testFolder + "/RunTests.ps1\" -box \"" + baseboxfile + "\" -hypervisor virtualbox");
+            if(ret != 0)
+                throw new Exception("Tests failed!");
+        });
+            
+
+    patchbase.IsDependentOn("Build.Patch." + osName);
+
+    Task("Build.Patch." + osName)
+        .WithCriteria(!FileExists(patchboxfile))
+        .Does(() => StartPacker(osName, "patch", patch: true));
+
+    Task("Debug.Patch." + osName)
+        .WithCriteria(!FileExists(patchboxfile))
+        .Does(() => StartPacker(osName, "patch", debug: true, patch: true));
+
+    Task("Test.Patch." + osName)
+        .WithCriteria(FileExists(patchboxfile))
+        .Does(() => StartPowershellFile(testFolder + "/Test-Box.ps1", 
+            args => args
+                .Append("boxpath",patchboxfile)
+                .Append("hypervisor","virtualbox")
+                .Append("checkpatches", true)
+            ));
+
+});
+
+void StartPacker(string os, string tag, bool debug=false, bool patch=false) 
+{
+
+    var command = "build -var-file=\"osconfig\\" + os + "\\vars.json\" -var boxtag=" + tag + " -var cm=" + cm + " "; 
+
+    if(patch)
+        command += "-var patchvm=true ";
+    else
+        command += "-var patchvm=false ";
+
+    if(debug)
+        command += "-debug ";
+
+    command += " .\\packerbase.json";
+
+    StartProcess("packer", command);
+}
 
 string[] GetHypervisors()
 {
