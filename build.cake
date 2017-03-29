@@ -33,7 +33,7 @@ Task("VMware.CopyTools")
             CopyFile("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe", RepoRootFolder + "/vmtools/vmware/vmtools.exe");
         else
             System.IO.File.WriteAll(RepoRootFolder + "/vmtools/vmware/vmtools.exe", "");
-    )};
+    });
 
 var buildbase = Task("Build.Base");
 var patchbase = Task("Build.Patch");
