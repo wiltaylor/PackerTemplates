@@ -1,6 +1,35 @@
 {
     "builders": [
     {
+        "type": "hyperv-iso",
+        "name": "hyperv",
+        "iso_url": "{{user `iso_url`}}",
+        "iso_checksum": "{{user `iso_checksum`}}",
+        "iso_checksum_type": "{{user `iso_checksum_type`}}",
+        //mem 2048
+        //cpu 2
+        "output_directory": "./temp/output-{{user `vm_name`}}hyperv",
+        "vm_name": "{{user `vm_name`}}",
+        "communicator": "winrm",
+        "winrm_username": "vagrant",
+        "winrm_password": "vagrant",
+        "winrm_timeout": "12h",
+        "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
+        "shutdown_timeout": "{{user `shutdown_timeout`}}",
+        "floppy_files": [
+            "VMTools\\hyperv\\VMTools.ps1",
+            "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
+            "osconfig\\{{user `vm_name`}}\\config.psd1",
+            "osconfig\\{{user `vm_name`}}\\postunattend.xml",
+            "scripts\\00-bootstrap.cmd",
+            "Scripts\\00-FirstRun.ps1",
+            "Scripts\\setupcomplete.cmd",
+            "scripts\\shutdown.cmd",
+            "scripts\\fixnetwork.ps1",
+            "vmtools\\vmware\\vmtools.exe"
+        ]
+    },
+    {
         "type": "vmware-iso",
         "name": "vmware",
         "guest_os_type": "{{user `vmware_guestos`}}",

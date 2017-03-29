@@ -103,11 +103,11 @@ function Install-Updates {
     {
         $patchindex++
 
-        if($patchindex -gt 100) 
+        <#if($patchindex -gt 100) 
         {
             Write-Host "Have installed 100 updates...rebooting."
             return $true
-        }
+        }#>
 
         $currentupdate = New-Object -ComObject Microsoft.Update.UpdateColl
         $currentupdate.Add($u) | Out-Null
