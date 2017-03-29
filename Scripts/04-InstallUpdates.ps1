@@ -15,20 +15,6 @@ function Install-Updates {
     }
     
     Write-Host "Found $($Patches.Count) more patches!"
-    $rollups = New-Object -ComObject Microsoft.Update.UpdateColl
-    foreach($u in $Patches) 
-    {
-        if($u.Title.ToLower() -like "cumulative update") {
-            $rollups.Add($u)
-            Write-Host "Found Cumulative Update: $($u.Title)"
-        }
-    }
-
-    if($rollups.Count -ne 0) {
-        Write-Host "Only installing Cumulative Updates this run... Remaining patches will be installed on reboot."
-        $Patches = $rollups
-    }
-
     $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
     $updatesToInstall = New-Object -ComObject Microsoft.Update.UpdateColl
     $AlreadyDownloaded = New-Object -ComObject Microsoft.Update.UpdateColl
