@@ -30,7 +30,7 @@ Task("VMware.CopyTools")
     .WithCriteria(!FileExists(RepoRootFolder + "/vmtools/vmware/vmtools.exe"))
     .Does(() => {
         if(FileExists("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe"))
-            CopyFile("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe", RepoRootFolder + "/vmtools/vmware/vmtools.exe"));
+            CopyFile("C:/Program Files (x86)/VMware/VMware Workstation/tools-upgraders/VMwareToolsUpgrader.exe", RepoRootFolder + "/vmtools/vmware/vmtools.exe");
         else
             System.IO.File.WriteAll(RepoRootFolder + "/vmtools/vmware/vmtools.exe", "");
         };
