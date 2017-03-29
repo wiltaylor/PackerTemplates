@@ -3,6 +3,7 @@ param($boxpath, $hypervisor, $boxname, [switch]$checkpatches, [switch]$HaltAtEnd
 $reporoot = Resolve-Path "$PSScriptRoot\.."
 $boxpath = $boxpath.Replace("\", "/")
 $DirectoryBeforeTest = Get-Location
+$boxname = $boxname.Replace(".", "_")
 
 function Write-Text {
     param([Parameter(ValueFromPipeline=$true, 
@@ -21,14 +22,24 @@ $result = Describe "Test box settings" {
         New-item "$reporoot\boxtest\$boxname" -ItemType Directory -ErrorAction SilentlyContinue
         New-item "$reporoot\boxtest\$boxname\vagrant" -ItemType Directory
         #New-item "$reporoot\boxtest\$boxname\vagrantboxdata" -ItemType Directory
-        Copy-item "$reporoot\Test\Vagrantfile" "$reporoot\boxtest\$boxname\vagrant\Vagrantfile"
+        $script = @"
+        # -*- mode: ruby -*-
+        # vi: set ft=ruby :
+        Vagrant.configure("2") do |config|
+        config.vm.box = "sutbox_$boxname"
+        end
+
+"@      | Set-Content "$reporoot\boxtest\$boxname\vagrant\Vagrantfile"
 
         #Setup vagrant root to test folder. This is so tests dont impact installed vagrant environment.
         #$env:VAGRANT_HOME = "$reporoot\boxtest\$boxname\vagrantboxdata"
+        Write-Text "Box Name: $boxname"
+        Write-Text "BoxPath: $boxpath"
+        Write-Text "Hypervisor: $hypervisor"
 
         #Import testbox
-        &vagrant box remove sutbox -f | Write-Text
-        &vagrant box add sutbox $boxpath | Write-Text
+        &vagrant box remove "sutbox_$boxname" -f | Write-Text
+        &vagrant box add "sutbox_$boxname" $boxpath | Write-Text
 
         #Start VM
         Set-Location "$reporoot\boxtest\$boxname\vagrant"
@@ -49,20 +60,12 @@ $result = Describe "Test box settings" {
         #Destory VM and remove box from vagrant.
         &vagrant destroy -f | Write-Text
 
+        #Remove box.
+        &vagrant box remove "sutbox_$boxname" -f | Write-Text
+
         #Nuke test folder so nothing is left over.
         Set-Location $DirectoryBeforeTest
         Remove-item "$reporoot\$boxname\boxtest" -Force -Recurse -ErrorAction SilentlyContinue    
-    }
-
-    It "RDP Port accessable" {
-        #Getting mapped port from vagrant, this can change dynamically which is why we need to get it from here.
-        
-        $vagrantdata = &vagrant port
-        $port = [int]::Parse([regex]::Match($vagrantdata, ".*3389 \(guest\) => ([0-9]{1,7}) \(host\).*").captures.groups[1].value)
-        Write-Text "Bound Local Host Port: $port"
-
-        #Testing if a TCP connection can be made.
-        (Test-NetConnection -ComputerName "127.0.0.1" -Port $port).TcpTestSucceeded | should be $true
     }
 
     It "Can connect via WinRM" {
@@ -71,6 +74,24 @@ $result = Describe "Test box settings" {
 
         $vagrantdata | Should BeLike "*testing*"
         $vagrantdata | Should BeLike "*executed succesfully with output code 0.*"
+    }
+
+    It "RDP Port accessable" {
+        #Getting mapped port from vagrant, this can change dynamically which is why we need to get it from here.
+        $ips = @()
+        $ips += ((&vagrant powershell -c "(Get-WmiObject Win32_NetworkAdapterConfiguration).IPAddress") -match "([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})").replace("default:","").trim()
+        $port = 3389
+
+        $foundport = $false
+
+        foreach($ip in $ips) {
+            if((Test-NetConnection -ComputerName $ip -Port $port).TcpTestSucceeded) {
+                $foundport = $true
+            }
+        }
+
+        #Testing if a TCP connection can be made.
+        $foundport | should be $true
     }
 
     It "Has vagrant account in local admin" {

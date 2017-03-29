@@ -3,6 +3,8 @@
     "iso_checksum": "3bb1c60417e9aeb3f4ce0eb02189c0c84a1c6691",
     "iso_checksum_type": "sha1",
     "vbox_guestos": "Windows2012_64",
+    "vmware_guestos": "windows9-64",
+    "vmware_scsibus": "lsisas1068",
     "vm_name": "Windows2016",
     "headless": "true",
     "shutdown_command": "shutdown.exe /s /t 0 /f",

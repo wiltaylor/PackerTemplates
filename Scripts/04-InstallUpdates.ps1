@@ -31,6 +31,7 @@ function Install-Updates {
 
     $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
     $updatesToInstall = New-Object -ComObject Microsoft.Update.UpdateColl
+    $AlreadyDownloaded = New-Object -ComObject Microsoft.Update.UpdateColl
     $patchcount = $patches.Count
     $patchindex = 0
     Write-Host "Checking if updates are already downloaded..."
@@ -115,6 +116,13 @@ function Install-Updates {
     foreach($u in $updatesToInstall)
     {
         $patchindex++
+
+        if($patchindex -gt 100) 
+        {
+            Write-Host "Have installed 100 updates...rebooting."
+            return $true
+        }
+
         $currentupdate = New-Object -ComObject Microsoft.Update.UpdateColl
         $currentupdate.Add($u) | Out-Null
 

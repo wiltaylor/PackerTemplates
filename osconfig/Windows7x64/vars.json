@@ -4,6 +4,8 @@
     "iso_checksum_type": "sha1",
     "vbox_guestos": "Windows7_64",
     "vm_name": "Windows7x64",
+    "vmware_guestos": "windows7-64",
+    "vmware_scsibus": "lsisas1068",
     "headless": "true",
     "shutdown_command": "shutdown.exe /s /t 0 /f",
     "shutdown_timeout": "1h",

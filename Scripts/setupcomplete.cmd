@@ -5,3 +5,5 @@ reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Updat
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUState /t REG_DWORD /d 7
 del c:\postunattend.xml
 del c:\shutdown.cmd
+
+powershell -executionpolicy bypass -noninteractive -noprofile -file c:\windows\fixnetwork.ps1

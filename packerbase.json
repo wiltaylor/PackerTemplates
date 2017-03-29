@@ -30,6 +30,7 @@
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
             "scripts\\shutdown.cmd",
+            "scripts\\fixnetwork.ps1",
             "vmtools\\vmware\\vmtools.exe"
         ]
     },
@@ -78,6 +79,7 @@
             "scripts\\00-bootstrap.cmd",
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
+            "scripts\\fixnetwork.ps1",
             "scripts\\shutdown.cmd"
         ]
     }
@@ -109,7 +111,7 @@
                 "patchvm={{user `patchvm`}}",
                 "cleanvm={{user `cleanvm`}}"
             ],
-            "valid_exit_codes": [0, 3010]
+            "valid_exit_codes": [0, 1, 3010]
         },
         {
             "type": "windows-restart",
@@ -159,6 +161,56 @@
         {
             "type": "powershell",
             "script": "scripts/03-InstallRollup.ps1",
+            "elevated_user": "vagrant",
+            "elevated_password": "vagrant",
+            "environment_vars": [
+                "guestos={{user `vm_name`}}",
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
+            ],
+            "valid_exit_codes": [
+                0,
+                1,
+                2,
+                3,
+                5,
+                10,
+                15,
+                3010
+            ]
+        },
+        {
+            "type": "windows-restart",
+            "restart_timeout": "2h"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/04-InstallUpdates.ps1",
+            "elevated_user": "vagrant",
+            "elevated_password": "vagrant",
+            "environment_vars": [
+                "guestos={{user `vm_name`}}",
+                "patchvm={{user `patchvm`}}",
+                "cleanvm={{user `cleanvm`}}"
+            ],
+            "valid_exit_codes": [
+                0,
+                1,
+                2,
+                3,
+                5,
+                10,
+                15,
+                3010
+            ]
+        },
+        {
+            "type": "windows-restart",
+            "restart_timeout": "2h"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/04-InstallUpdates.ps1",
             "elevated_user": "vagrant",
             "elevated_password": "vagrant",
             "environment_vars": [

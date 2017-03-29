@@ -36,7 +36,7 @@ var patchbase = Task("Build.Patch");
 Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
 {
     var osName = System.IO.Path.GetFileName(folder);
-    var baseboxfile = RepoRootFolder + "/box/" + osName + "-base-" + cm + "-" + hypervisor + ".box";
+    var baseboxfile = "box/" + osName + "-base-" + cm + "-" + hypervisor + ".box";
     var patchboxfile = RepoRootFolder + "/box/" + osName + "-patch-" + cm + "-" + hypervisor +".box";
 
     if(osName.ToLower().Contains("disabled"))

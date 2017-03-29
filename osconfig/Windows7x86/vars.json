@@ -3,6 +3,8 @@
     "iso_checksum": "971fc00183a52c152fe924a6b99fdec011a871c2",
     "iso_checksum_type": "sha1",
     "vbox_guestos": "Windows7",
+    "vmware_guestos": "windows7",
+    "vmware_scsibus": "lsisas1068",
     "vm_name": "Windows7x86",
     "headless": "true",
     "shutdown_command": "shutdown.exe /s /t 0 /f",

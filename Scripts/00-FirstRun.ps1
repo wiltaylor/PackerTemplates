@@ -32,6 +32,7 @@ Copy-Item a:\setupcomplete.cmd c:\setupcomplete.cmd
 Copy-Item a:\postunattend.xml c:\postunattend.xml
 Copy-Item a:\config.psd c:\config.psd1
 Copy-Item a:\shutdown.cmd c:\shutdown.cmd
+Copy-Item a:\fixnetwork.ps1 c:\windows\fixnetwork.ps1
 
 #Getting SDelete - Need to get v1.61 as current version has a hanging glitch.
 #(New-Object System.Net.WebClient).DownloadFile("https://web.archive.org/web/20141009082654/http://live.sysinternals.com/sdelete.exe", "c:\sdelete.exe")
