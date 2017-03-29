@@ -6,8 +6,8 @@
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "{{user `iso_checksum_type`}}",
-        //mem 2048
-        //cpu 2
+        "ram_size": 2048,
+        "cpu": 2,
         "output_directory": "./temp/output-{{user `vm_name`}}hyperv",
         "vm_name": "{{user `vm_name`}}",
         "communicator": "winrm",
