@@ -56,7 +56,7 @@ Array.ForEach(System.IO.Directory.GetDirectories(osdir), folder =>
         .IsDependentOn("VMware.CopyTools")
         .WithCriteria(!FileExists(baseboxfile))
         .Does(() => StartPacker(osName, "base", debug: true));
-
+        
     Task("Test.Base." + osName)
         .WithCriteria(FileExists(baseboxfile))
         .Does(() => 

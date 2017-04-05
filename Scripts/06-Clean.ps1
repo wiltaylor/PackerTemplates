@@ -6,6 +6,8 @@ if($env:cleanvm -eq "true") {
     Remove-Item "c:\wufix.*" -ErrorAction SilentlyContinue
     Remove-Item "c:\sp.exe" -ErrorAction SilentlyContinue
     Remove-Item "c:\config.psd1" -ErrorAction SilentlyContinue
+    Remove-Item "c:\psexec.exe" -ErrorAction SilentlyContinue
+    Remove-Item "c:\patching.txt" -ErrorAction SilentlyContinue
 
     Write-Host "Cleaning SxS..."
     if($env:nodismclean -eq "false") {
@@ -49,6 +51,7 @@ if($env:cleanvm -eq "true") {
     $ZeroArray= new-object byte[]($ArraySize)
 
     $Stream= [io.File]::OpenWrite($FilePath)
+    $lastpercent = -1
     try {
     $CurFileSize = 0
         while($CurFileSize -lt $FileSize) {
@@ -57,7 +60,10 @@ if($env:cleanvm -eq "true") {
 
             $percent = [Math]::Round($CurFileSize / $FileSize * 100)
 
-            Write-Host "Cleaning space [$percent%]"
+            if($percent -ne $lastpercent){
+                Write-Host "Cleaning space [$percent%]"
+                $lastpercent = $percent
+            }
         }
     }
     finally {

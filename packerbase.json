@@ -26,7 +26,8 @@
             "Scripts\\setupcomplete.cmd",
             "scripts\\shutdown.cmd",
             "scripts\\fixnetwork.ps1",
-            "vmtools\\vmware\\vmtools.exe"
+            "vmtools\\vmware\\vmtools.exe",
+            "scripts\\InstallUpdates.ps1"
         ]
     },
     {
@@ -60,7 +61,8 @@
             "Scripts\\setupcomplete.cmd",
             "scripts\\shutdown.cmd",
             "scripts\\fixnetwork.ps1",
-            "vmtools\\vmware\\vmtools.exe"
+            "vmtools\\vmware\\vmtools.exe",
+            "scripts\\InstallUpdates.ps1"
         ]
     },
     {
@@ -109,7 +111,8 @@
             "Scripts\\00-FirstRun.ps1",
             "Scripts\\setupcomplete.cmd",
             "scripts\\fixnetwork.ps1",
-            "scripts\\shutdown.cmd"
+            "scripts\\shutdown.cmd",
+            "scripts\\InstallUpdates.ps1"
         ]
     }
     ],
@@ -117,8 +120,6 @@
         {
             "type": "powershell",
             "inline": "&c:\\vmtools.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -132,9 +133,7 @@
         },
         {
             "type": "powershell",
-            "inline": "Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
+            "inline": "if (-not(\"{{user `boxtag`}}\".Contains(\"base\"))) {Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))}",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -149,8 +148,6 @@
         {
             "type": "powershell",
             "script": "scripts/01-InstallServicePack.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -165,8 +162,6 @@
         {
             "type": "powershell",
             "script": "scripts/02-FixWindowsUpdate.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -190,8 +185,6 @@
         {
             "type": "powershell",
             "script": "scripts/03-InstallRollup.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -215,8 +208,6 @@
         {
             "type": "powershell",
             "script": "scripts/04-InstallUpdates.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -240,8 +231,6 @@
         {
             "type": "powershell",
             "script": "scripts/04-InstallUpdates.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -265,8 +254,6 @@
         {
             "type": "powershell",
             "script": "scripts/04-InstallUpdates.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -290,8 +277,6 @@
         {
             "type": "powershell",
             "script": "scripts/04-InstallUpdates.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -315,8 +300,6 @@
         {
             "type": "powershell",
             "script": "scripts/04-InstallUpdates.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -340,8 +323,6 @@
         {
             "type": "powershell",
             "script": "scripts/05-InstallWMF5.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -365,8 +346,6 @@
         {
             "type": "powershell",
             "script": "CM/{{user `cm`}}/installcm.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -386,8 +365,6 @@
         {
             "type": "powershell",
             "script": "scripts/06-Clean.ps1",
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
