@@ -13,6 +13,10 @@ var osdir = RepoRootFolder + "/osconfig";
 var PackerCacheFolder = RepoRootFolder + "/packer_cache";
 var BoxFolder = RepoRootFolder + "/box";
 var testFolder = RepoRootFolder + "/test";
+var packerfile = "packerbase.json"
+
+if(hypervisor == "hyperv")
+    packerfile = "packerbase-hyperv.json"
 
 Task("Clean")
     .IsDependentOn("Clean.PackerCache")
@@ -103,7 +107,7 @@ void StartPacker(string os, string tag, bool debug=false, bool patch=false)
     if(debug)
         command += "-debug ";
 
-    command += " .\\packerbase.json";
+    command += " .\\" + packerfile;
 
     StartProcess("packer", command);
 }

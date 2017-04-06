@@ -1,20 +1,15 @@
 {
     "builders": [
     {
-        "type": "vmware-iso",
-        "name": "vmware",
-        "guest_os_type": "{{user `vmware_guestos`}}",
+        "type": "hyperv-iso",
+        "name": "hyperv",
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "{{user `iso_checksum_type`}}",
-        "vmx_data" : {
-            "memsize" : "2048",
-            "numvcpus": "2",
-            "scsi0.virtualDev": "{{user `vmware_scsibus`}}"
-        },
-        "output_directory": "./temp/output-{{user `vm_name`}}vmware",
+        "ram_size": 2048,
+        "cpu": 2,
+        "output_directory": "./temp/output-{{user `vm_name`}}hyperv",
         "vm_name": "{{user `vm_name`}}",
-        "headless": "{{user `headless` }}",
         "communicator": "winrm",
         "winrm_username": "vagrant",
         "winrm_password": "vagrant",
@@ -22,7 +17,7 @@
         "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
         "shutdown_timeout": "{{user `shutdown_timeout`}}",
         "floppy_files": [
-            "VMTools\\vmware\\VMTools.ps1",
+            "VMTools\\hyperv\\VMTools.ps1",
             "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
             "osconfig\\{{user `vm_name`}}\\config.psd1",
             "osconfig\\{{user `vm_name`}}\\postunattend.xml",
@@ -34,58 +29,7 @@
             "vmtools\\vmware\\vmtools.exe",
             "scripts\\InstallUpdates.ps1"
         ]
-    },
-    {
-        "type": "virtualbox-iso",
-        "name": "virtualbox",
-        "guest_os_type": "{{user `vbox_guestos`}}",
-        "iso_url": "{{user `iso_url`}}",
-        "iso_checksum": "{{user `iso_checksum`}}",
-        "iso_checksum_type": "{{user `iso_checksum_type`}}",
-        "vboxmanage": [
-            [
-            "modifyvm",
-            "{{.Name}}",
-            "--memory",
-            "2048"
-            ],
-            [
-            "modifyvm",
-            "{{.Name}}",
-            "--vram",
-            "48"
-            ],
-            [
-            "modifyvm",
-            "{{.Name}}",
-            "--cpus",
-            "2"
-            ]
-        ],
-        "output_directory": "./temp/output-{{user `vm_name`}}virtualbox",
-        "vm_name": "{{user `vm_name`}}",
-        "guest_additions_mode": "attach",
-        "headless": "{{user `headless` }}",
-        "communicator": "winrm",
-        "winrm_username": "vagrant",
-        "winrm_password": "vagrant",
-        "winrm_timeout": "12h",
-        "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
-        "shutdown_timeout": "{{user `shutdown_timeout`}}",
-        "floppy_files": [
-            "VMTools\\virtualbox\\VMTools.ps1",
-            "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
-            "osconfig\\{{user `vm_name`}}\\config.psd1",
-            "osconfig\\{{user `vm_name`}}\\postunattend.xml",
-            "scripts\\00-bootstrap.cmd",
-            "Scripts\\00-FirstRun.ps1",
-            "Scripts\\setupcomplete.cmd",
-            "scripts\\fixnetwork.ps1",
-            "scripts\\shutdown.cmd",
-            "scripts\\InstallUpdates.ps1"
-        ]
-    }
-    ],
+    }],
     "provisioners": [
         {
             "type": "powershell",
