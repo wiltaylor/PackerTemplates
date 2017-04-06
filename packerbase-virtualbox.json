@@ -82,7 +82,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/01-InstallServicePack.ps1",
+            "script": "Scripts/01-InstallServicePack.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -96,7 +96,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/02-FixWindowsUpdate.ps1",
+            "script": "Scripts/02-FixWindowsUpdate.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -119,7 +119,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/03-InstallRollup.ps1",
+            "script": "Scripts/03-InstallRollup.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -142,7 +142,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/04-InstallUpdates.ps1",
+            "script": "Scripts/04-InstallUpdates.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -165,7 +165,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/04-InstallUpdates.ps1",
+            "script": "Scripts/04-InstallUpdates.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -188,7 +188,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/04-InstallUpdates.ps1",
+            "script": "Scripts/04-InstallUpdates.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -211,7 +211,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/04-InstallUpdates.ps1",
+            "script": "Scripts/04-InstallUpdates.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -234,7 +234,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/04-InstallUpdates.ps1",
+            "script": "Scripts/04-InstallUpdates.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -257,7 +257,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/05-InstallWMF5.ps1",
+            "script": "Scripts/05-InstallWMF5.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
@@ -299,7 +299,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/06-Clean.ps1",
+            "script": "Scripts/06-Clean.ps1",
             "environment_vars": [
                 "guestos={{user `vm_name`}}",
                 "patchvm={{user `patchvm`}}",
