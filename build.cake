@@ -16,7 +16,13 @@ var testFolder = RepoRootFolder + "/test";
 var packerfile = "packerbase.json"
 
 if(hypervisor == "hyperv")
-    packerfile = "packerbase-hyperv.json"
+    packerfile = "packerbase-hyperv.json";
+
+if(hypervisor == "vmware")
+    packerfile = "packerbase-vmware.json";
+
+if(hypervisor == "virtualbox")
+    ppackerfile = "packerbase-virtualbox.json";
 
 Task("Clean")
     .IsDependentOn("Clean.PackerCache")
