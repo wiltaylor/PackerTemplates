@@ -26,13 +26,13 @@
             "osconfig/{{user `vm_name`}}/Autounattend.xml",
             "osconfig/{{user `vm_name`}}/config.psd1",
             "osconfig/{{user `vm_name`}}/postunattend.xml",
-            "scripts/00-bootstrap.cmd",
+            "Scripts/00-bootstrap.cmd",
             "Scripts/00-FirstRun.ps1",
             "Scripts/setupcomplete.cmd",
-            "scripts/shutdown.cmd",
-            "scripts/fixnetwork.ps1",
+            "Scripts/shutdown.cmd",
+            "Scripts/fixnetwork.ps1",
             "vmtools/vmware/vmtools.exe",
-            "scripts/InstallUpdates.ps1"
+            "Scripts/InstallUpdates.ps1"
         ]
     },
     {
@@ -77,12 +77,12 @@
             "osconfig/{{user `vm_name`}}/Autounattend.xml",
             "osconfig/{{user `vm_name`}}/config.psd1",
             "osconfig/{{user `vm_name`}}/postunattend.xml",
-            "scripts/00-bootstrap.cmd",
+            "Scripts/00-bootstrap.cmd",
             "Scripts/00-FirstRun.ps1",
             "Scripts/setupcomplete.cmd",
-            "scripts/fixnetwork.ps1",
-            "scripts/shutdown.cmd",
-            "scripts/InstallUpdates.ps1"
+            "Scripts/fixnetwork.ps1",
+            "Scripts/shutdown.cmd",
+            "Scripts/InstallUpdates.ps1"
         ]
     }
     ],
