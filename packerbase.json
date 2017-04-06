@@ -22,17 +22,17 @@
         "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
         "shutdown_timeout": "{{user `shutdown_timeout`}}",
         "floppy_files": [
-            "VMTools\\vmware\\VMTools.ps1",
-            "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
-            "osconfig\\{{user `vm_name`}}\\config.psd1",
-            "osconfig\\{{user `vm_name`}}\\postunattend.xml",
-            "scripts\\00-bootstrap.cmd",
-            "Scripts\\00-FirstRun.ps1",
-            "Scripts\\setupcomplete.cmd",
-            "scripts\\shutdown.cmd",
-            "scripts\\fixnetwork.ps1",
-            "vmtools\\vmware\\vmtools.exe",
-            "scripts\\InstallUpdates.ps1"
+            "VMTools/vmware/VMTools.ps1",
+            "osconfig/{{user `vm_name`}}/Autounattend.xml",
+            "osconfig/{{user `vm_name`}}/config.psd1",
+            "osconfig/{{user `vm_name`}}/postunattend.xml",
+            "scripts/00-bootstrap.cmd",
+            "Scripts/00-FirstRun.ps1",
+            "Scripts/setupcomplete.cmd",
+            "scripts/shutdown.cmd",
+            "scripts/fixnetwork.ps1",
+            "vmtools/vmware/vmtools.exe",
+            "scripts/InstallUpdates.ps1"
         ]
     },
     {
@@ -73,16 +73,16 @@
         "shutdown_command": "cmd.exe /c c:\\shutdown.cmd",
         "shutdown_timeout": "{{user `shutdown_timeout`}}",
         "floppy_files": [
-            "VMTools\\virtualbox\\VMTools.ps1",
-            "osconfig\\{{user `vm_name`}}\\Autounattend.xml",
-            "osconfig\\{{user `vm_name`}}\\config.psd1",
-            "osconfig\\{{user `vm_name`}}\\postunattend.xml",
-            "scripts\\00-bootstrap.cmd",
-            "Scripts\\00-FirstRun.ps1",
-            "Scripts\\setupcomplete.cmd",
-            "scripts\\fixnetwork.ps1",
-            "scripts\\shutdown.cmd",
-            "scripts\\InstallUpdates.ps1"
+            "VMTools/virtualbox/VMTools.ps1",
+            "osconfig/{{user `vm_name`}}/Autounattend.xml",
+            "osconfig/{{user `vm_name`}}/config.psd1",
+            "osconfig/{{user `vm_name`}}/postunattend.xml",
+            "scripts/00-bootstrap.cmd",
+            "Scripts/00-FirstRun.ps1",
+            "Scripts/setupcomplete.cmd",
+            "scripts/fixnetwork.ps1",
+            "scripts/shutdown.cmd",
+            "scripts/InstallUpdates.ps1"
         ]
     }
     ],
