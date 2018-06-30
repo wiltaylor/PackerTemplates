@@ -2,8 +2,6 @@
 Packer Build Script
 Author: Wil Taylor
 *****************************************************************************************************/
-#addin "Cake.Powershell"
-
 var target = Argument("target", "Default");
 var cm = Argument("cm", "nocm");
 var hypervisor = Argument("hypervisor", "virtualbox");
@@ -13,7 +11,7 @@ var osdir = RepoRootFolder + "/osconfig";
 var PackerCacheFolder = RepoRootFolder + "/packer_cache";
 var BoxFolder = RepoRootFolder + "/box";
 var testFolder = RepoRootFolder + "/test";
-var packerfile = "packerbase.json"
+var packerfile = "packerbase.json";
 
 if(hypervisor == "hyperv")
     packerfile = "packerbase-hyperv.json";
@@ -22,7 +20,7 @@ if(hypervisor == "vmware")
     packerfile = "packerbase-vmware.json";
 
 if(hypervisor == "virtualbox")
-    ppackerfile = "packerbase-virtualbox.json";
+    packerfile = "packerbase-virtualbox.json";
 
 Task("Clean")
     .IsDependentOn("Clean.PackerCache")

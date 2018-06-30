@@ -30,7 +30,7 @@ Restart-Service -Name WinRM
 Copy-Item a:\vmtools.ps1 c:\vmtools.ps1
 Copy-Item a:\setupcomplete.cmd c:\setupcomplete.cmd
 Copy-Item a:\postunattend.xml c:\postunattend.xml
-Copy-Item a:\config.psd c:\config.psd1
+Copy-Item a:\config.psd1 c:\config.psd1
 Copy-Item a:\shutdown.cmd c:\shutdown.cmd
 Copy-Item a:\fixnetwork.ps1 c:\windows\fixnetwork.ps1
 Copy-Item a:\InstallUpdates.ps1 c:\InstallUpdates.ps1

@@ -7,10 +7,16 @@
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "{{user `iso_checksum_type`}}",
+        "disk_size": 500000,
+        "disk_type_id": 0,
+        "disk_adapter_type": "{{user `vmware_scsibus`}}",
+        "cdrom_adapter_type": "sata",
+        "version": 14,
         "vmx_data" : {
-            "memsize" : "2048",
+            "memsize" : "4096",
             "numvcpus": "2",
-            "scsi0.virtualDev": "{{user `vmware_scsibus`}}"
+            "virtualHW.productCompatibility": "hosted",
+            "gui.applyHostDisplayScalingToGuest": "FALSE" 
         },
         "output_directory": "./temp/output-{{user `vm_name`}}vmware",
         "vm_name": "{{user `vm_name`}}",
